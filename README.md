@@ -8,7 +8,7 @@ So I've heard this Apache Camel thing is powerful and easy to use, and my old Ar
 
 Well it turns out it is do-able. Here is the few lines of code you need to connect your Current Cost Envi to Xively via a Raspberry Pi - or in my case an Odroid (http://www.hardkernel.com/main/products/prdt_info.php?g_code=G141578608433).
 
-What it does:
+# What it does:
 
 Uses an Apache Camel route to receive incoming streaming data from a file
 Route then:
@@ -21,7 +21,7 @@ Route then:
 An ASCII art of the this can be found at https://github.com/bleep1/CC128Xively-UsingCamel/wiki 
 
 
-What you need:
+# What you need:
 * Current Cost 128 Envi:  http://currentcost.com/product-envi.html  
 * Data cable for CC128 Envi (This is a serial to USB cable. You might be able to hack one from old unwanted junk)
   I got my CC128 Envi parts from http://www.smartnow.com.au/ 
@@ -31,7 +31,7 @@ What you need:
 * Xively account from www.Xively.com
 * This source code.
 
-Getting it going steps:
+# Getting it going:
 
 1) On the Xively account make a new Feed. The number of datastreams should be at least the number of CC-Envi sensors+1 you have. In my case I monitor whole house Power plus a few key power points in the house. (Such as Server power usage :(  
 * The +1 is because the CC-Envi also reports current temperature at the device so we may as well log that too.
@@ -54,17 +54,18 @@ Getting it going steps:
 
 
 
-What does this show
+# What does this show
 I'm amazed that I used 
 * MQTT, 
 * XSLT, 
 * Logging in Log4j, 
 * a Linux serial port and 
 * Apache Camel
-All without writing one line of Java. That makes this Apache Camel stuff pretty cool.
 
+All these libraries without writing one line of Java. Even though they are all Java based.
+ 
 
-To do:
+# To do:
 * make a cleaner install package/
 
 
