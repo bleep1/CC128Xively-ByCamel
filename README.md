@@ -20,6 +20,9 @@ Route then:
 
 An ASCII art of the this can be found at https://github.com/bleep1/CC128Xively-UsingCamel/wiki 
 
+# Want to see what it outputs
+https://xively.com/feeds/63115
+
 
 # What you need:
 * Current Cost 128 Envi:  http://currentcost.com/product-envi.html  
