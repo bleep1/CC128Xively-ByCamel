@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configures the Camel Context-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+  <camel:camelContext xmlns="http://camel.apache.org/schema/spring" trace="false" >
+    <properties>
+        <property key="CamelLogDebugBodyMaxChars" value="50000"/>
+    </properties>
+    
+    
+    <camel:route>
+		<description>
+	        1) mkfifo /home/brian/mypipe.txt
+			2) start this route
+			3) cat someXML &gt;mypipe.txt
+		</description>
+        <from uri="stream:file?fileName=/home/brian/mypipe.txt&amp;scanStreamDelay=1000&amp;scanStream=true&amp;retry=true"/>
+        <to uri="log:testRoute?level=DEBUG"/>
+        <split streaming="true">
+            <tokenize token="msg" xml="true"></tokenize>
+            <to uri="log:testSplit?level=DEBUG"/>
+		    <camel:to uri="xslt:xform/CC128ToXively.xsl" />
+		    <camel:to uri="log://BeforeMQTT?level=WARN"  />
+		    <camel:to uri="mqtt://xiv?host=tcp://api.xively.com:1883&amp;connectWaitInSeconds=30&amp;userName=<PUT_YOUR_API_KEY_HERE>&amp;qualityOfService=AtMostOnce&amp;publishTopicName=/v2/feeds/<PUT_YOUR_FEED_ID_HERE>.xml"/>      
+        </split>    
+    
+    </camel:route>
+  </camel:camelContext>
+
+</beans>
+
