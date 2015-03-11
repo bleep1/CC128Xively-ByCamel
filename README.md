@@ -9,9 +9,14 @@ So I've heard this Apache Camel thing is powerful and easy to use, and my old Ar
 Well it turns out it is do-able. Here is the few lines of code you need to connect your Current Cost 128 to Xively via a Raspberry Pi - or in my case an Odroid (http://www.hardkernel.com/main/products/prdt_info.php?g_code=G141578608433).
 
 What it does:
+
 Uses an Apache Camel route to receive incoming streaming data from a file
 Route then:
-Stream -> splt on <MSG> -> transform to Xively  -> MQTT to Xively
+
+* Recieve Envi data as a Stream from a file. (in my case a named pipe to decouple the real source. That means i have to cat /dev/ttyUSB0 > /somedir/mypipe.txt ) -> 
+* splt on MSG tag -> 
+* transform from Envi-XML to Xively-EEML-XML  -> 
+* send to Xively using MQTT
 
 
 
@@ -39,13 +44,15 @@ Getting it going steps:
 
 5) mvn camel:run
 
+5a) Remeber Envi serial is 57600   so do a stty -F /dev/ttyUSB0 57600
+5b) remember if you are streaming from a named pipe instead of from /dev/ttyUSB0 then you have to cat ttyUSB0 to pipe
+
 6) Hey presto, see your Envi data up on Xively!!!!
 
 
 
 What does this show
-* I'm amazed that I used MQTT, XSLT, Logging in Log4j, a Linux serial port and Apach Camel; all without writing one line of Java. That makes this Apache Camel stuff pretty cool.
-* 
+* I'm amazed that I used MQTT, XSLT, Logging in Log4j, a Linux serial port and Apache Camel; all without writing one line of Java. That makes this Apache Camel stuff pretty cool.
 
 
 To do:
