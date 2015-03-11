@@ -9,7 +9,7 @@ So I've heard this Apache Camel thing is powerful and easy to use, and my old Ar
 Well it turns out it is do-able. Here is the few lines of code you need to connect your Current Cost 128 to Xively via a Raspberry Pi - or in my case an Odroid (http://www.hardkernel.com/main/products/prdt_info.php?g_code=G141578608433).
 
 What it does:
-
+____
    +---+----+                                        
    | Envi   |                                        
    |        |                                        
@@ -33,7 +33,7 @@ What it does:
                                | Xively Site   |     
                                |               |     
                                +---------------+     
-
+____
 
 
 What you need:
