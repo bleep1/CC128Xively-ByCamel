@@ -9,31 +9,11 @@ So I've heard this Apache Camel thing is powerful and easy to use, and my old Ar
 Well it turns out it is do-able. Here is the few lines of code you need to connect your Current Cost 128 to Xively via a Raspberry Pi - or in my case an Odroid (http://www.hardkernel.com/main/products/prdt_info.php?g_code=G141578608433).
 
 What it does:
-____
-   +---+----+                                        
-   | Envi   |                                        
-   |        |                                        
-   +---+----+                                        
-       | 
-+-----------------+--------+---+----------------+---+
-|      |          +--------+   +----------------+   |
-|      |          | Split  |   | Transform Envi |   |
-|   +--v-----+    | on     |   | to             |   |
-|   | Stream +----> <msg>  |   | Xively XML     |   |
-|   |        |    |        +--->                |   |
-|   +--------+    +--------+   +---+------------+   |
-|                                  |                |
-|                              +---v-------+----+   |
-|  Apache Camel route          | MQTT to Xively |   |
-|                              |                |   |
-|                              +----------------+   |
-+------------------------------+----------------+---+
-                               |                 
-                               +---------------+     
-                               | Xively Site   |     
-                               |               |     
-                               +---------------+     
-____
+Uses an Apache Camel route to receive incoming streaming data from a file
+Route then:
+Stream -> splt on <MSG> -> transform to Xively  -> MQTT to Xively
+
+
 
 
 What you need:
