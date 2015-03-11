@@ -19,13 +19,20 @@ What you need:
 * This source code.
 
 Getting it going steps:
+
 1) On the Xively account make a new Feed with the number of CC128 receivers+1 you have. (in my case I monitor whole house Power plus a few key power points in the house. (Such as Server power usage :(  )
 * The +1 is because the CC128 also reports current temperature at the device so we may as well log that too.
+
 2) plug in the Envi Serial cable
+
 3) Download this code
+
 4) Edit the Camel Route by adding your API-Key.  (leave no spaces in the URI)
+
 5) mvn camel:run
+
 6) Hey presto, see your Envi data up on Xively!!!!
+
 
 
 What does this show
