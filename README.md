@@ -18,7 +18,7 @@ Route then:
 * transform from Envi-XML to Xively-EEML-XML  -> 
 * send to Xively using MQTT
 
-
+An ASCII art of the this can be found at https://github.com/bleep1/CC128Xively-UsingCamel/wiki 
 
 
 What you need:
@@ -40,7 +40,10 @@ Getting it going steps:
 
 3) Download this code
 
-4) Edit the Camel Route by adding your API-Key.  (leave no spaces in the URI)
+4) Edit the Camel Route chaninging
+* your API-Key.  
+* your feed_id.
+* (leave no spaces in the URIs)
 
 5) mvn camel:run
 
