@@ -24,11 +24,21 @@
         <to uri="log:testRoute?level=DEBUG"/>
         <split streaming="true">
             <tokenize token="msg" xml="true"></tokenize>
-            <to uri="log:testSplit?level=DEBUG"/>
+            <!-- to uri="log:testSplit?level=DEBUG"/>   -->
+            <choice>
+                <when>
+                  <xpath>/msg/hist</xpath>
+                  <to uri="log:gotHIST?level=DEBUG"/>
+                  <to uri="file:/home/odroid/ccenvi?fileName=hist-${date:now:yyyyMMdd_HHmmSS.sss}.txt"/>   
+                </when>
+                <otherwise>
+                    <to uri="log:gotOtherwise?level=DEBUG"/>
 		    <camel:to uri="xslt:xform/CC128ToXively.xsl" />
 		    <camel:to uri="log://BeforeMQTT?level=WARN"  />
-		    <camel:to uri="mqtt://xiv?host=tcp://api.xively.com:1883&amp;connectWaitInSeconds=30&amp;userName=<PUT_YOUR_API_KEY_HERE>&amp;qualityOfService=AtMostOnce&amp;publishTopicName=/v2/feeds/<PUT_YOUR_FEED_ID_HERE>.xml"/>      
-        </split>    
+		    <camel:to uri="mqtt://xiv?host=tcp://api.xively.com:1883&amp;connectWaitInSeconds=30&amp;userName=<PUT_YOUR_API_KEY_HERE>&amp;qualityOfService=AtMostOnce&amp;publishTopicName=/v2/feeds/<PUT_YOUR_FEED_ID_HERE>.xml"/>
+                </otherwise>
+            </choice>
+        </split>   
     
     </camel:route>
   </camel:camelContext>
