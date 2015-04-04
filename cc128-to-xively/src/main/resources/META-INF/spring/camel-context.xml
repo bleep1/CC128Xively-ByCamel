@@ -40,7 +40,7 @@
 				    <camel:to uri="bean:myProcessor?method=process"/>
 				    <camel:to uri="log://AfterBean?level=DEBUG"  />
 				    <!-- 
-				    -- removed this transform as it's done in the Java code now.
+				      removed this transform as it's done in the Java code now.
 				    <camel:to uri="xslt:xform/CC128ToXively.xsl" />
 				    -->  
 				    <!-- 
