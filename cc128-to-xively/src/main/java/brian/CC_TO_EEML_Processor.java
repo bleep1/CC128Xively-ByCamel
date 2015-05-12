@@ -51,11 +51,19 @@ public class CC_TO_EEML_Processor {
 
 	private Float getFloat(String tag, String msg) {
 		String element = getElement(tag, msg);
-		return new Float(element);
+		Float f = new Float(element);
+		if (f == null)
+			return new Float(0.0f);
+		else
+			return f;
 	}
 	private Integer getInteger(String tag, String msg) {
 		String element = getElement(tag, msg);
-		return new Integer(element);
+		Integer i = new Integer(element);
+		if (i == null)
+			return new Integer(0);
+		else
+			return i;
 	}
 	
 	
@@ -72,14 +80,27 @@ public class CC_TO_EEML_Processor {
 		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		sb.append("<eeml>");
 		sb.append("<environment>");		
-		sb.append("<data id=\"0\"><current_value>" + savedTmpr + "</current_value></data>");
-		sb.append("<data id=\"1\"><current_value>" + savedResults.get(new Integer(0)) + "</current_value></data>");
-		sb.append("<data id=\"2\"><current_value>" + savedResults.get(new Integer(1)) + "</current_value></data>");
-		sb.append("<data id=\"3\"><current_value>" + savedResults.get(new Integer(2)) + "</current_value></data>");
-		sb.append("<data id=\"4\"><current_value>" + savedResults.get(new Integer(3)) + "</current_value></data>");
+		sb.append("<data id=\"0\"><current_value>" + getStrf(savedTmpr) + "</current_value></data>");
+		sb.append("<data id=\"1\"><current_value>" + getStr(savedResults.get(new Integer(0))) + "</current_value></data>");
+		sb.append("<data id=\"2\"><current_value>" + getStr(savedResults.get(new Integer(1))) + "</current_value></data>");
+		sb.append("<data id=\"3\"><current_value>" + getStr(savedResults.get(new Integer(2))) + "</current_value></data>");
+		sb.append("<data id=\"4\"><current_value>" + getStr(savedResults.get(new Integer(3))) + "</current_value></data>");
 		sb.append("</environment>");
 		sb.append("</eeml>");
 		return sb.toString();
+	}
+	
+	private String getStrf(Float f) {
+		if (f == null) 
+			return "0.0";
+		else
+			return f.toString();
+	}
+	private String getStr(Integer i) {
+		if (i == null) 
+			return "0";
+		else
+			return i.toString();
 	}
 	
 /*
