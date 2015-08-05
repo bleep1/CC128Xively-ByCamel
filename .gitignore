@@ -8,4 +8,5 @@ pom.xml.versionsBackup
 pom.xml.next
 release.properties
 **/camel-context.xml.lastKnownGood
+**/bin/
 

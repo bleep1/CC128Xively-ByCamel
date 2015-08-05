@@ -25,18 +25,34 @@ import org.apache.camel.Exchange;
  * @author brian
  *
  */
-public class CC_TO_EEML_Processor {
+public class CC_TO_EEML_Processor extends CCDataHandler {
 	private static Hashtable<Integer, Integer> savedResults = new Hashtable<Integer, Integer>();
 	private static Float savedTmpr = 0.0f;
 	
 	public CC_TO_EEML_Processor() {
 	}
 
+	/*
+	 * Number of Sensors including the all house sensor. These will be numbered
+	 * 0=all house
+	 * 1
+	 * 2
+	 * 3
+	 * etc
+	 */
+	private int numberOfSensors = 4;  //default to 4 because that's what I use today. Two more coming
+	public int getNumberOfSensors() {
+		return numberOfSensors;
+	}
+	public void setNumberOfSensors(int numberOfSensors) {
+		this.numberOfSensors = numberOfSensors;
+		System.out.println("***********************************************************************");
+		System.out.println("cc_to_eeml_processor now set numberOfSensors (inc whole house) to: " + numberOfSensors);
+		System.out.println("***********************************************************************");
+	}
+
 	public void process(Exchange exchange) {
 		String incoming = exchange.getIn().getBody().toString();
-		
-		//pluck out the incoming new value and remember in the cachedResults
-		//create the new outgoing message to send to Xively
 		
 		savedTmpr = getFloat("tmpr", incoming);
 		Integer sensorId = getInteger("sensor", incoming);
@@ -45,46 +61,28 @@ public class CC_TO_EEML_Processor {
         
         String eeml = constructEEML();
         exchange.getIn().setBody(eeml);
+        exchange.getIn().setHeader("CC_MSG_TYPE", "EEML");
 	}//that's it!!!
-
 	
-
-	private Float getFloat(String tag, String msg) {
-		String element = getElement(tag, msg);
-		Float f = new Float(element);
-		if (f == null)
-			return new Float(0.0f);
-		else
-			return f;
-	}
-	private Integer getInteger(String tag, String msg) {
-		String element = getElement(tag, msg);
-		Integer i = new Integer(element);
-		if (i == null)
-			return new Integer(0);
-		else
-			return i;
-	}
-	
-	
-	
-	private String getElement(String tag, String msg) {
-		int start = msg.indexOf("<" + tag + ">") + tag.length() + 2;
-		int end = msg.indexOf("</" + tag);
-		String element = msg.substring(start, end);
-		return element;
-	}
-	
+	/**
+	 * @see https://personal.xively.com/dev/docs/api/data/write/single_datapoint_to_each_datastream/ 
+	 * @return
+	 */
 	private String constructEEML() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		sb.append("<eeml>");
-		sb.append("<environment>");		
-		sb.append("<data id=\"0\"><current_value>" + getStrf(savedTmpr) + "</current_value></data>");
-		sb.append("<data id=\"1\"><current_value>" + getStr(savedResults.get(new Integer(0))) + "</current_value></data>");
-		sb.append("<data id=\"2\"><current_value>" + getStr(savedResults.get(new Integer(1))) + "</current_value></data>");
-		sb.append("<data id=\"3\"><current_value>" + getStr(savedResults.get(new Integer(2))) + "</current_value></data>");
-		sb.append("<data id=\"4\"><current_value>" + getStr(savedResults.get(new Integer(3))) + "</current_value></data>");
+		sb.append("<environment>\n");		
+//		sb.append("<data id=\"0\"><current_value>" + getStrf(savedTmpr) + "</current_value></data>");
+//		sb.append("<data id=\"1\"><current_value>" + getStr(savedResults.get(new Integer(0))) + "</current_value></data>");
+//		sb.append("<data id=\"2\"><current_value>" + getStr(savedResults.get(new Integer(1))) + "</current_value></data>");
+//		sb.append("<data id=\"3\"><current_value>" + getStr(savedResults.get(new Integer(2))) + "</current_value></data>");
+//		sb.append("<data id=\"4\"><current_value>" + getStr(savedResults.get(new Integer(3))) + "</current_value></data>");
+
+		sb.append("<data id=\"0\"><current_value>" + getStrf(savedTmpr) + "</current_value></data>\n");
+		for (int i=1; i<=numberOfSensors; i+=1) {
+			sb.append("<data id=\""+ i + "\"><current_value>" + getStr(savedResults.get(i-1)) + "</current_value></data>\n");
+		}
 		sb.append("</environment>");
 		sb.append("</eeml>");
 		return sb.toString();
@@ -127,7 +125,8 @@ public class CC_TO_EEML_Processor {
  * <eeml>
  *   <environment>
  *     <data id="0"><current_value>26.3</current_value></data>
- *     <data id="3"><current_value>00252</current_value></data>
+ *     <data id="1"><current_value>00252</current_value></data>
+ *     <data id="2"><current_value>00452</current_value></data>
  *   </environment>
  * </eeml>
  */
